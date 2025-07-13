@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router";
 import { Button } from "./ui/button";
+import { AddBook } from "@/pages/AddBook";
+import { ModeToggle } from "./model-toggle";
 
 export default function Navbar() {
   return (
@@ -14,21 +16,23 @@ export default function Navbar() {
         {/* Center: Menu Items (hidden in mobile) */}
         <ul className="hidden md:flex gap-6 text-sm font-medium">
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/books">
+              <Button variant="outline">All Books</Button>
+            </Link>
           </li>
           <li>
-            <Link to="/user">User</Link>
+            <AddBook />
           </li>
           <li>
-            <Link to="/services">Services</Link>
+            <Link to="/borrow-summary">
+              <Button variant="outline">Borrow Summary</Button>
+            </Link>
           </li>
         </ul>
 
         {/* Right: Sign Up Button */}
         <div className="">
-          <div className=" bg-white text-black">
-            <Button>Book store</Button>
-          </div>
+          <ModeToggle />
         </div>
 
         {/* Mobile Menu Icon */}
