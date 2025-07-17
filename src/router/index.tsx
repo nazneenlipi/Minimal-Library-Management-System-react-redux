@@ -5,6 +5,7 @@ import { App } from "../App";
 import { BorrowSummary } from "@/pages/BorrowSummary";
 import { Books } from "@/pages/Books";
 import { AddBook } from "@/pages/AddBook";
+import BookDetails from "@/pages/BookDetails";
 
 
 const router = createBrowserRouter([
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
         },{
             path:"user",
             element:<User/>
+        },
+        {
+            path:"/books/:id",
+            element:<BookDetails />
         }
     ]
   },

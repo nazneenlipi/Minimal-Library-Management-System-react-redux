@@ -6,10 +6,12 @@ import {
 } from "@/components/redux/api/baseApi";
 import type Book from "@/lib/book";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
+import { useNavigate } from "react-router";
+
 import { toast } from "sonner";
 
 export const Books = () => {
-
+ const navigate = useNavigate();
   const { data, isLoading, isError } = useGetBooksQuery(undefined);
   const [deleteBook] = useDeleteBookMutation();
   if (isLoading) return <p className="text-center text-gray-300">Loading...</p>;
@@ -61,7 +63,7 @@ export const Books = () => {
               </p>
 
               <button className="p-2 rounded-full bg-gray-800 text-blue-400 hover:text-blue-500 hover:bg-gray-700 transition">
-                <FaEye className="w-4 h-4" />
+                <FaEye onClick={()=>navigate(`/books/${book._id}`)} className="w-4 h-4" />
               </button>
               <button className="p-2 rounded-full bg-gray-800 text-green-400 hover:text-green-500 hover:bg-gray-700 transition">
                 <FaEdit className="w-4 h-4" />
