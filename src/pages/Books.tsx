@@ -1,10 +1,11 @@
 "use client";
 
 import { useGetBooksQuery } from "@/components/redux/api/baseApi";
+import type Book from "@/lib/book";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 
 export const Books = () => {
-  const { data, isLoading, isError } = useGetBooksQuery();
+  const { data, isLoading, isError } = useGetBooksQuery(undefined);
 
   if (isLoading) return <p className="text-center text-gray-300">Loading...</p>;
   if (isError)
@@ -16,7 +17,7 @@ export const Books = () => {
         📚 Our Book Collection
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data?.data?.map((book) => (
+        {data?.data?.map((book:Book) => (
           <div
             key={book._id}
             className="bg-gradient-to-br from-[#1e1e1e] to-[#2a2a2a] border border-gray-700 shadow-xl rounded-2xl p-5 hover:scale-[1.02] hover:shadow-gray-500/40 transition-all duration-300"
@@ -25,12 +26,12 @@ export const Books = () => {
               {book.title}
             </h3>
             <p className="text-sm text-gray-400 mb-1">
-              👤 Author: {book.author}
+               Author: {book.author}
             </p>
-            <p className="text-sm text-gray-400 mb-1">📘 Genre: {book.genre}</p>
-            <p className="text-sm text-gray-400 mb-1">🔖 ISBN: {book.isbn}</p>
+            <p className="text-sm text-gray-400 mb-1"> Genre: {book.genre}</p>
+            <p className="text-sm text-gray-400 mb-1"> ISBN: {book.isbn}</p>
             <p className="text-sm text-gray-400 mb-2">
-              📝 Description:{" "}
+               Description:{" "}
               <span className="text-gray-300">{book.description}</span>
             </p>
             <p className="text-sm text-gray-400 mb-1">
