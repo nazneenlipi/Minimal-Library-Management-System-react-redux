@@ -6,6 +6,7 @@ import { BorrowSummary } from "@/pages/BorrowSummary";
 import { Books } from "@/pages/Books";
 import { AddBook } from "@/pages/AddBook";
 
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
     children:[
         {
             path:"/books",
+            index:true,
             element:<Books/>
         },
         {

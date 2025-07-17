@@ -1,3 +1,4 @@
+import { useAddBookMutation } from "@/components/redux/api/baseApi";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type Book from "@/lib/book";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 export function AddBook() {
   const {
     register,
@@ -30,9 +32,34 @@ export function AddBook() {
       description: "",
     },
   });
-  const onSubmit = (data: Book) => {
-    console.log("Submit", data);
-    reset();
+  const [addBook, { isLoading, isError }] = useAddBookMutation();
+  const onSubmit = async (data: Book) => {
+    console.log("Submitting book:", {
+      title: data.title,
+      author: data.author,
+      genre: data.genre,
+      isbn: data.isbn,
+      copies: Number(data.copies),
+      available: data.available === true,
+      description: data.description,
+    });
+
+    try {
+      await addBook({
+        title: data.title,
+        author: data.author,
+        genre: data.genre,
+        isbn: data.isbn,
+        copies: data.copies,
+        available: data.available === true,
+        description: data.description,
+      }).unwrap();
+      toast("Book has been created.");
+      reset();
+    } catch (error) {
+      console.error("Error adding book:", error);
+      toast.error("Failed to add book.");
+    }
   };
 
   return (
@@ -169,9 +196,10 @@ export function AddBook() {
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button type="submit">Add Book</Button>
+            <Button type="submit">{isLoading ? "Adding" : "Add Book "}</Button>
           </DialogFooter>
         </DialogContent>
+        {isError && <p className="text-red-500">Failed to add book.</p>}
       </form>
     </Dialog>
   );

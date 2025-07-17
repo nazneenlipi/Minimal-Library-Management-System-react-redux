@@ -1,15 +1,30 @@
 "use client";
 
-import { useGetBooksQuery } from "@/components/redux/api/baseApi";
+import {
+  useDeleteBookMutation,
+  useGetBooksQuery,
+} from "@/components/redux/api/baseApi";
 import type Book from "@/lib/book";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
+import { toast } from "sonner";
 
 export const Books = () => {
-  const { data, isLoading, isError } = useGetBooksQuery(undefined);
 
+  const { data, isLoading, isError } = useGetBooksQuery(undefined);
+  const [deleteBook] = useDeleteBookMutation();
   if (isLoading) return <p className="text-center text-gray-300">Loading...</p>;
   if (isError)
     return <p className="text-center text-red-400">Something went wrong!</p>;
+
+  const handleDelete = async (id: number) => {
+    try {
+      const res = await deleteBook(id).unwrap();
+      toast.success("Book delete");
+    } catch (error) {
+      console.error("Error deleting book:", error);
+      toast.error("Failed to delete book.");
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto py-10 px-4">
@@ -17,7 +32,7 @@ export const Books = () => {
         📚 Our Book Collection
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data?.data?.map((book:Book) => (
+        {data?.data?.map((book: Book) => (
           <div
             key={book._id}
             className="bg-gradient-to-br from-[#1e1e1e] to-[#2a2a2a] border border-gray-700 shadow-xl rounded-2xl p-5 hover:scale-[1.02] hover:shadow-gray-500/40 transition-all duration-300"
@@ -25,13 +40,11 @@ export const Books = () => {
             <h3 className="text-xl font-bold text-gray-100 mb-2">
               {book.title}
             </h3>
-            <p className="text-sm text-gray-400 mb-1">
-               Author: {book.author}
-            </p>
+            <p className="text-sm text-gray-400 mb-1">Author: {book.author}</p>
             <p className="text-sm text-gray-400 mb-1"> Genre: {book.genre}</p>
             <p className="text-sm text-gray-400 mb-1"> ISBN: {book.isbn}</p>
             <p className="text-sm text-gray-400 mb-2">
-               Description:{" "}
+              Description:{" "}
               <span className="text-gray-300">{book.description}</span>
             </p>
             <p className="text-sm text-gray-400 mb-1">
@@ -54,7 +67,7 @@ export const Books = () => {
                 <FaEdit className="w-4 h-4" />
               </button>
               <button className="p-2 rounded-full bg-gray-800 text-red-400 hover:text-red-500 hover:bg-gray-700 transition">
-                <FaTrash className="w-4 h-4" />
+                <FaTrash onClick={()=>handleDelete(book._id)} className="w-4 h-4" />
               </button>
             </div>
           </div>
