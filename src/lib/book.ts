@@ -8,3 +8,11 @@ export default interface Book {
   copies: number;
   available: boolean;
 }
+
+export interface BorrowedBook {
+  totalQuantity: number;
+  book: {
+    title: string;
+    isbn: string;
+  };
+};

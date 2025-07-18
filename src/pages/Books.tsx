@@ -67,9 +67,9 @@ export const Books = () => {
                   className="w-4 h-4"
                 />
               </button>
-              <button className="p-2 rounded-full bg-gray-800 text-green-400 hover:text-green-500 hover:bg-gray-700 transition">
+              <div className="p-2 rounded-full bg-gray-800 text-green-400 hover:text-green-500 hover:bg-gray-700 transition">
                 <EditBookModal book={book} />
-              </button>
+              </div>
               <button className="p-2 rounded-full bg-gray-800 text-red-400 hover:text-red-500 hover:bg-gray-700 transition">
                 <FaTrash
                   onClick={() => handleDelete(book._id)}

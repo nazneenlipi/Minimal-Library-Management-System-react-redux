@@ -1,15 +1,23 @@
+import type { BorrowedBook } from "@/lib/book";
 import type Book from "@/lib/book";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
+}
 
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "https://mongoose-book-server-moduler-patter.vercel.app/api",
   }),
-  tagTypes: ["Books", "Book"],
+  tagTypes: ["Books", "Book", "Borrow"],
   endpoints: (build) => ({
     getBooks: build.query<Book[], void>({
       query: () => "/books",
+      providesTags: ["Books"],
     }),
     
     addBook: build.mutation<Book, Partial<Book>>({
@@ -55,6 +63,21 @@ export const baseApi = createApi({
         { type: "Books", id: "LIST" },
       ],
     }),
+
+    // Updated borrowBooks query
+    getBorrowBooks: build.query<ApiResponse<BorrowedBook[]>, void>({
+      query: () => "/borrow",
+      providesTags: ["Borrow"],
+    }),
+
+    borrowBook: build.mutation<ApiResponse<BorrowedBook>, Partial<BorrowedBook>>({
+      query: (body) => ({
+        url: "/borrow",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Borrow"],
+    }),
   }),
 });
 
@@ -64,4 +87,6 @@ export const {
   useGetBooksByIdQuery,
   useDeleteBookMutation,
   useUpdateBookMutation,
+  useGetBorrowBooksQuery,
+  useBorrowBookMutation,
 } = baseApi;

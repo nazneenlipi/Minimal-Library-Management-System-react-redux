@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogFooter,
   DialogClose,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -78,11 +79,14 @@ const EditBookModal = ({ book }: { book: Book }) => {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-[600px] bg-[#121212] text-white border border-stone-700 rounded-xl">
+      <DialogContent  aria-describedby="dialog-description" className="sm:max-w-[600px] bg-[#121212] text-white border border-stone-700 rounded-xl">
         <DialogHeader>
           <DialogTitle className="text-white text-lg font-semibold">
             Edit Book
           </DialogTitle>
+           <DialogDescription className="text-sm text-gray-400">
+              Fill out the form to edit a new book to the collection.
+            </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
