@@ -74,7 +74,7 @@ export const baseApi = createApi({
       providesTags: ["Borrow"],
     }),
 
-    borrowBook: build.mutation<ApiResponse<any>, BorrowBookRequest>({
+    borrowBook: build.mutation<ApiResponse<BorrowedBook>, BorrowBookRequest>({
       query: (body) => ({
         url: "/borrow",
         method: "POST",
