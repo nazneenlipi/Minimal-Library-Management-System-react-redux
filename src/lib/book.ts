@@ -5,7 +5,7 @@ export default interface Book {
   genre: string;
   isbn: string;
   description: string;
-  copies: number;
+  quantity: number;
   available: boolean;
 }
 
@@ -15,4 +15,4 @@ export interface BorrowedBook {
     title: string;
     isbn: string;
   };
-};
+}

@@ -7,7 +7,11 @@ interface ApiResponse<T> {
   message: string;
   data: T;
 }
-
+interface BorrowBookRequest {
+  book: string;
+  quantity: number;
+  dueDate: string;
+}
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
@@ -19,7 +23,7 @@ export const baseApi = createApi({
       query: () => "/books",
       providesTags: ["Books"],
     }),
-    
+
     addBook: build.mutation<Book, Partial<Book>>({
       query(body) {
         return {
@@ -30,12 +34,12 @@ export const baseApi = createApi({
       },
       invalidatesTags: [{ type: "Books", id: "LIST" }],
     }),
-    
+
     getBooksById: build.query<Book, string>({
       query: (id) => `/books/${id}`,
       providesTags: (result, error, id) => [{ type: "Books", id }],
     }),
-    
+
     updateBook: build.mutation<Book, { id: string } & Partial<Book>>({
       query(data) {
         const { id, ...body } = data;
@@ -50,7 +54,7 @@ export const baseApi = createApi({
         { type: "Books", id: "LIST" },
       ],
     }),
-    
+
     deleteBook: build.mutation<{ success: boolean; id: string }, string>({
       query(id) {
         return {
@@ -70,7 +74,7 @@ export const baseApi = createApi({
       providesTags: ["Borrow"],
     }),
 
-    borrowBook: build.mutation<ApiResponse<BorrowedBook>, Partial<BorrowedBook>>({
+    borrowBook: build.mutation<ApiResponse<any>, BorrowBookRequest>({
       query: (body) => ({
         url: "/borrow",
         method: "POST",

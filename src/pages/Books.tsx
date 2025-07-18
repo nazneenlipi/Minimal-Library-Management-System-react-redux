@@ -4,10 +4,10 @@ import {
 } from "@/components/redux/api/baseApi";
 import type Book from "@/lib/book";
 import { FaEye, FaTrash } from "react-icons/fa";
-import { useNavigate } from "react-router";
-
+import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 import EditBookModal from "./EditBookModal";
+import BorrowBookModal from "./BorrowBookModal";
 
 export const Books = () => {
   const navigate = useNavigate();
@@ -67,8 +67,11 @@ export const Books = () => {
                   className="w-4 h-4"
                 />
               </button>
-              <div className="p-2 rounded-full bg-gray-800 text-green-400 hover:text-green-500 hover:bg-gray-700 transition">
+              <div className=" bg-gray-800 text-green-400 hover:text-green-500 hover:bg-gray-700 transition">
                 <EditBookModal book={book} />
+              </div>
+              <div className=" bg-gray-800 text-green-400 hover:text-green-500 hover:bg-gray-700 transition">
+               <BorrowBookModal book={book} />
               </div>
               <button className="p-2 rounded-full bg-gray-800 text-red-400 hover:text-red-500 hover:bg-gray-700 transition">
                 <FaTrash
