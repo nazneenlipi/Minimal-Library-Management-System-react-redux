@@ -16,3 +16,15 @@ export interface BorrowedBook {
     isbn: string;
   };
 }
+
+
+export interface ApiErrorResponse {
+  success: false;
+  message: string;
+  error: string;
+}
+
+export interface BorrowFormData {
+  quantity: number;
+  date: string;
+}

@@ -17,12 +17,7 @@ import { toast } from "sonner";
 import { FaBookOpen } from "react-icons/fa";
 import { useBorrowBookMutation } from "@/components/redux/api/baseApi";
 import type Book from "@/lib/book";
-
-// Interface for borrow form data
-interface BorrowFormData {
-  quantity: number;
-  date: string;
-}
+import type { ApiErrorResponse, BorrowFormData } from "@/lib/book";
 
 interface BorrowBookModalProps {
   book: Book;
@@ -48,25 +43,15 @@ const BorrowBookModal = ({ book }: BorrowBookModalProps) => {
   });
 
   const onSubmit = async (data: BorrowFormData) => {
-    // Try different request formats
-   const requestData = {
-  book: book._id,
-  quantity: data.quantity,
-  dueDate: data.date, 
-};
-
-    
-    // Alternative format if above doesn't work
-    // const requestData = {
-    //   book: book._id,
-    //   quantity: data.quantity,
-    //   returnDate: data.date,
-    // };
-    
+    const requestData = {
+      book: book._id,
+      quantity: data.quantity,
+      dueDate: data.date,
+    };
     console.log("Sending borrow request with data:", requestData);
     console.log("Book object:", book);
     console.log("Book ID:", book._id);
-    
+
     try {
       const response = await borrowBook(requestData).unwrap();
       console.log("Success response:", response);
@@ -76,12 +61,12 @@ const BorrowBookModal = ({ book }: BorrowBookModalProps) => {
     } catch (error) {
       console.error("Error borrowing book:", error);
       console.error("Request data that failed:", requestData);
-      
+
       // More detailed error handling
-      if (error && typeof error === 'object' && 'data' in error) {
-        const errorData = error.data as any;
+      if (error && typeof error === "object" && "data" in error) {
+        const errorData = error.data as ApiErrorResponse;
         console.error("Server error details:", errorData);
-        toast.error(errorData.message || "Failed to borrow book.");
+        toast.error(errorData.error || "Failed to borrow book.");
       } else {
         toast.error("Failed to borrow book.");
       }
@@ -130,15 +115,15 @@ const BorrowBookModal = ({ book }: BorrowBookModalProps) => {
                   const selectedDate = new Date(value);
                   const today = new Date();
                   today.setHours(0, 0, 0, 0);
-                  return selectedDate > today || "Return date must be in the future";
+                  return (
+                    selectedDate > today || "Return date must be in the future"
+                  );
                 },
               })}
               className="bg-[#1e1e1e] text-white border-stone-700"
             />
             {errors.date && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.date.message}
-              </p>
+              <p className="text-red-500 text-sm mt-1">{errors.date.message}</p>
             )}
           </div>
 
@@ -152,7 +137,10 @@ const BorrowBookModal = ({ book }: BorrowBookModalProps) => {
               {...register("quantity", {
                 required: "Quantity is required",
                 min: { value: 1, message: "Must be at least 1" },
-                max: { value: book.quantity, message: `Maximum ${book.quantity} books available` },
+                max: {
+                  value: book.quantity,
+                  message: `Maximum ${book.quantity} books available`,
+                },
                 valueAsNumber: true,
               })}
               className="bg-[#1e1e1e] text-white border-stone-700"
