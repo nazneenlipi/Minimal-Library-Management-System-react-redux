@@ -1,26 +1,25 @@
-"use client";
-
 import {
   useDeleteBookMutation,
   useGetBooksQuery,
 } from "@/components/redux/api/baseApi";
 import type Book from "@/lib/book";
-import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
+import { FaEye, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router";
 
 import { toast } from "sonner";
+import EditBookModal from "./EditBookModal";
 
 export const Books = () => {
- const navigate = useNavigate();
+  const navigate = useNavigate();
   const { data, isLoading, isError } = useGetBooksQuery(undefined);
   const [deleteBook] = useDeleteBookMutation();
   if (isLoading) return <p className="text-center text-gray-300">Loading...</p>;
   if (isError)
     return <p className="text-center text-red-400">Something went wrong!</p>;
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     try {
-      const res = await deleteBook(id).unwrap();
+      await deleteBook(id).unwrap();
       toast.success("Book delete");
     } catch (error) {
       console.error("Error deleting book:", error);
@@ -63,13 +62,19 @@ export const Books = () => {
               </p>
 
               <button className="p-2 rounded-full bg-gray-800 text-blue-400 hover:text-blue-500 hover:bg-gray-700 transition">
-                <FaEye onClick={()=>navigate(`/books/${book._id}`)} className="w-4 h-4" />
+                <FaEye
+                  onClick={() => navigate(`/books/${book._id}`)}
+                  className="w-4 h-4"
+                />
               </button>
               <button className="p-2 rounded-full bg-gray-800 text-green-400 hover:text-green-500 hover:bg-gray-700 transition">
-                <FaEdit className="w-4 h-4" />
+                <EditBookModal book={book} />
               </button>
               <button className="p-2 rounded-full bg-gray-800 text-red-400 hover:text-red-500 hover:bg-gray-700 transition">
-                <FaTrash onClick={()=>handleDelete(book._id)} className="w-4 h-4" />
+                <FaTrash
+                  onClick={() => handleDelete(book._id)}
+                  className="w-4 h-4"
+                />
               </button>
             </div>
           </div>

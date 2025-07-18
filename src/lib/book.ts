@@ -1,5 +1,5 @@
 export default interface Book {
-  _id: number;
+  _id: string;
   title: string;
   author: string;
   genre: string;
