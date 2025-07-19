@@ -19,12 +19,11 @@ export const baseApi = createApi({
   }),
   tagTypes: ["Books", "Book", "Borrow"],
   endpoints: (build) => ({
-    getBooks: build.query<Book[], void>({
+    getBooks: build.query<Book, void>({
       query: () => "/books",
       providesTags: ["Books"],
     }),
-
-    addBook: build.mutation<Book, Partial<Book>>({
+    addBook: build.mutation<ApiResponse<Book>, Partial<Book>>({
       query(body) {
         return {
           url: `/books`,

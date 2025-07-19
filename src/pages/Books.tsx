@@ -4,7 +4,7 @@ import {
 } from "@/components/redux/api/baseApi";
 import type Book from "@/lib/book";
 import { FaEye, FaTrash } from "react-icons/fa";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import EditBookModal from "./EditBookModal";
 import BorrowBookModal from "./BorrowBookModal";
@@ -66,6 +66,7 @@ export const Books = () => {
                   onClick={() => navigate(`/books/${book._id}`)}
                   className="w-4 h-4"
                 />
+        
               </button>
               <div className=" bg-gray-800 text-green-400 hover:text-green-500 hover:bg-gray-700 transition">
                 <EditBookModal book={book} />

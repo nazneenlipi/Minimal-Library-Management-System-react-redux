@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router";
 import { App } from "../App";
 import { Books } from "@/pages/Books";
-import { AddBook } from "@/pages/AddBook";
 import BookDetails from "@/pages/BookDetails";
 import BorrowedBooksTable from "@/pages/BorrowBooks";
+import { AddBook } from "@/pages/AddBook";
 
 const router = createBrowserRouter([
   {
@@ -16,10 +16,6 @@ const router = createBrowserRouter([
         element: <Books />,
       },
       {
-        path: "/add-book",
-        element: <AddBook />,
-      },
-      {
         path: "/borrow-summary",
         element: <BorrowedBooksTable />,
       },
@@ -27,6 +23,10 @@ const router = createBrowserRouter([
         path: "/books/:id",
         element: <BookDetails />,
       },
+      {
+        path:"/add-book",
+        element:<AddBook/>
+      }
     ],
   },
 ]);

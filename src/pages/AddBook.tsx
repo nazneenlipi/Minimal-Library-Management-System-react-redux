@@ -15,7 +15,19 @@ import { Label } from "@/components/ui/label";
 import type Book from "@/lib/book";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-export function AddBook() {
+import { useState } from "react";
+
+interface AddBookProps {
+  buttonText?: string;
+  variant?: "default" | "outline" | "ghost" | "destructive";
+}
+
+export function AddBook({
+  buttonText = "Add New Book",
+  variant = "outline",
+}: AddBookProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -32,43 +44,64 @@ export function AddBook() {
       description: "",
     },
   });
+
   const [addBook, { isLoading, isError }] = useAddBookMutation();
+
   const onSubmit = async (data: Book) => {
-    console.log("Submitting book:", {
-      title: data.title,
-      author: data.author,
-      genre: data.genre,
-      isbn: data.isbn,
-      copies: Number(data.copies),
-      available: data.available === true,
-      description: data.description,
-    });
+    console.log("Form submitted with data:", data);
 
     try {
-      await addBook({
-        title: data.title,
-        author: data.author,
-        genre: data.genre,
-        isbn: data.isbn,
-        copies: data.copies,
-        available: data.available === true,
-        description: data.description,
-      }).unwrap();
-      toast("Book has been created.");
-      reset();
-    } catch (error) {
+      const bookData = {
+        title: data.title.trim(),
+        author: data.author.trim(),
+        genre: data.genre.trim(),
+        isbn: data.isbn.trim(),
+        copies: Number(data.copies),
+        available: Boolean(data.available),
+        description: data.description?.trim() || "",
+      };
+
+      console.log("Sending book data:", bookData);
+
+      const response = await addBook(bookData).unwrap();
+
+      console.log("API response:", response);
+
+      if (response.success) {
+        toast.success("Book has been created successfully!");
+        reset();
+        setIsOpen(false);
+      } else {
+        toast.error(response.message || "Failed to add book.");
+      }
+    } catch (error: any) {
       console.error("Error adding book:", error);
-      toast.error("Failed to add book.");
+      if (error?.data?.message) {
+        toast.error(error.data.message);
+      } else if (error?.message) {
+        toast.error(error.message);
+      } else {
+        toast.error("Failed to add book. Please try again.");
+      }
     }
   };
 
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Form submit triggered");
+    handleSubmit(onSubmit)();
+  };
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Add New Book</Button>
+        <Button variant={variant} onClick={() => setIsOpen(true)}>
+          {buttonText}
+        </Button>
       </DialogTrigger>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogContent className="sm:max-w-[480px] bg-[#121212] border border-stone-700 rounded-xl">
+
+      <DialogContent className="sm:max-w-[480px] bg-[#121212] border border-stone-700 rounded-xl">
+        <form onSubmit={handleFormSubmit}>
           <DialogHeader>
             <DialogTitle className="text-white text-lg font-semibold">
               Add New Book
@@ -85,8 +118,12 @@ export function AddBook() {
               </Label>
               <Input
                 id="title"
-                {...register("title", { required: "Title is required" })}
-                className="bg-[#1e1e1e] border border-stone-700 text-white"
+                placeholder="Enter book title"
+                {...register("title", {
+                  required: "Title is required",
+                  minLength: { value: 1, message: "Title cannot be empty" },
+                })}
+                className="bg-[#1e1e1e] border border-stone-700 text-white placeholder:text-gray-500"
               />
               {errors.title && (
                 <p className="text-red-500 text-sm mt-1">
@@ -101,8 +138,12 @@ export function AddBook() {
               </Label>
               <Input
                 id="author"
-                {...register("author", { required: "Author is required" })}
-                className="bg-[#1e1e1e] border border-stone-700 text-white"
+                placeholder="Enter author name"
+                {...register("author", {
+                  required: "Author is required",
+                  minLength: { value: 1, message: "Author cannot be empty" },
+                })}
+                className="bg-[#1e1e1e] border border-stone-700 text-white placeholder:text-gray-500"
               />
               {errors.author && (
                 <p className="text-red-500 text-sm mt-1">
@@ -117,8 +158,12 @@ export function AddBook() {
               </Label>
               <Input
                 id="genre"
-                {...register("genre", { required: "Genre is required" })}
-                className="bg-[#1e1e1e] border border-stone-700 text-white"
+                placeholder="Enter book genre"
+                {...register("genre", {
+                  required: "Genre is required",
+                  minLength: { value: 1, message: "Genre cannot be empty" },
+                })}
+                className="bg-[#1e1e1e] border border-stone-700 text-white placeholder:text-gray-500"
               />
               {errors.genre && (
                 <p className="text-red-500 text-sm mt-1">
@@ -133,8 +178,12 @@ export function AddBook() {
               </Label>
               <Input
                 id="isbn"
-                {...register("isbn", { required: "ISBN is required" })}
-                className="bg-[#1e1e1e] border border-stone-700 text-white"
+                placeholder="Enter ISBN number"
+                {...register("isbn", {
+                  required: "ISBN is required",
+                  minLength: { value: 1, message: "ISBN cannot be empty" },
+                })}
+                className="bg-[#1e1e1e] border border-stone-700 text-white placeholder:text-gray-500"
               />
               {errors.isbn && (
                 <p className="text-red-500 text-sm mt-1">
@@ -150,11 +199,14 @@ export function AddBook() {
               <Input
                 id="copies"
                 type="number"
+                placeholder="Number of copies"
+                defaultValue={1}
                 {...register("copies", {
-                  required: "Copies is required",
-                  min: { value: 0, message: "Copies cannot be negative" },
+                  required: "Number of copies is required",
+                  min: { value: 1, message: "At least 1 copy is required" },
+                  valueAsNumber: true,
                 })}
-                className="bg-[#1e1e1e] border border-stone-700 text-white"
+                className="bg-[#1e1e1e] border border-stone-700 text-white placeholder:text-gray-500"
               />
               {errors.copies && (
                 <p className="text-red-500 text-sm mt-1">
@@ -167,6 +219,7 @@ export function AddBook() {
               <input
                 id="available"
                 type="checkbox"
+                defaultChecked={true}
                 {...register("available")}
                 className="w-4 h-4 text-indigo-600 bg-gray-700 border-gray-600 rounded focus:ring-indigo-500"
               />
@@ -187,20 +240,38 @@ export function AddBook() {
               id="description"
               {...register("description")}
               rows={4}
-              className="w-full bg-[#1e1e1e] border border-stone-700 rounded-md p-2 text-white resize-none"
+              className="w-full bg-[#1e1e1e] border border-stone-700 rounded-md p-2 text-white resize-none placeholder:text-gray-500"
               placeholder="Add book description..."
             />
           </div>
 
           <DialogFooter className="mt-6 flex justify-end gap-3">
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  reset();
+                  setIsOpen(false);
+                }}
+              >
+                Cancel
+              </Button>
             </DialogClose>
-            <Button type="submit">{isLoading ? "Adding" : "Add Book "}</Button>
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? "Adding..." : "Add Book"}
+            </Button>
           </DialogFooter>
-        </DialogContent>
-        {isError && <p className="text-red-500">Failed to add book.</p>}
-      </form>
+
+          {isError && (
+            <div className="mt-4">
+              <p className="text-red-500 text-sm">
+                Failed to add book. Please check all fields and try again.
+              </p>
+            </div>
+          )}
+        </form>
+      </DialogContent>
     </Dialog>
   );
 }

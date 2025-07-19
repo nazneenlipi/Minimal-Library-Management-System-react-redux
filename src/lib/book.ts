@@ -5,7 +5,7 @@ export default interface Book {
   genre: string;
   isbn: string;
   description: string;
-  quantity: number;
+  copies: number;
   available: boolean;
 }
 

@@ -1,8 +1,7 @@
-import React from "react";
 import { Link } from "react-router";
 import { Button } from "./ui/button";
-import { AddBook } from "@/pages/AddBook";
 import { ModeToggle } from "./model-toggle";
+import { AddBook } from "@/pages/AddBook";
 
 export default function Navbar() {
   return (
@@ -21,7 +20,8 @@ export default function Navbar() {
             </Link>
           </li>
           <li>
-            <AddBook />
+            {/* <Link to="/add-book">Add books</Link> */}
+              <AddBook buttonText="Add Books" variant="ghost" />
           </li>
           <li>
             <Link to="/borrow-summary">

@@ -133,20 +133,20 @@ const BorrowBookModal = ({ book }: BorrowBookModalProps) => {
               type="number"
               id="quantity"
               min="1"
-              max={book.quantity}
+              max={book.copies}
               {...register("quantity", {
                 required: "Quantity is required",
                 min: { value: 1, message: "Must be at least 1" },
                 max: {
-                  value: book.quantity,
-                  message: `Maximum ${book.quantity} books available`,
+                  value: book.copies,
+                  message: `Maximum ${book.copies} books available`,
                 },
                 valueAsNumber: true,
               })}
               className="bg-[#1e1e1e] text-white border-stone-700"
             />
             <p className="text-xs text-gray-400 mt-1">
-              Available: {book.quantity} books
+              Available: {book.copies} books
             </p>
             {errors.quantity && (
               <p className="text-red-500 text-sm mt-1">
