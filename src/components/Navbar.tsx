@@ -21,7 +21,7 @@ export default function Navbar() {
           </li>
           <li>
             {/* <Link to="/add-book">Add books</Link> */}
-              <AddBook buttonText="Add Books" variant="ghost" />
+              <AddBook buttonText="Add Books" variant="outline" />
           </li>
           <li>
             <Link to="/borrow-summary">
