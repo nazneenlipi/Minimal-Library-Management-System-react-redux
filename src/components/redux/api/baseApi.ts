@@ -19,10 +19,11 @@ export const baseApi = createApi({
   }),
   tagTypes: ["Books", "Book", "Borrow"],
   endpoints: (build) => ({
-    getBooks: build.query<Book, void>({
+    getBooks: build.query<ApiResponse<Book[]>, void>({
       query: () => "/books",
       providesTags: ["Books"],
     }),
+
     addBook: build.mutation<ApiResponse<Book>, Partial<Book>>({
       query(body) {
         return {
@@ -36,7 +37,7 @@ export const baseApi = createApi({
 
     getBooksById: build.query<Book, string>({
       query: (id) => `/books/${id}`,
-      providesTags: (result, error, id) => [{ type: "Books", id }],
+      providesTags: (_result, _error, id) => [{ type: "Books", id }],
     }),
 
     updateBook: build.mutation<Book, { id: string } & Partial<Book>>({
@@ -48,7 +49,7 @@ export const baseApi = createApi({
           body,
         };
       },
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_result, _error, { id }) => [
         { type: "Books", id },
         { type: "Books", id: "LIST" },
       ],
@@ -61,7 +62,7 @@ export const baseApi = createApi({
           method: "DELETE",
         };
       },
-      invalidatesTags: (result, error, id) => [
+      invalidatesTags: (_result, _error, id) => [
         { type: "Books", id },
         { type: "Books", id: "LIST" },
       ],
