@@ -6,11 +6,14 @@ A clean and functional **Library Management System** built with **React, Redux T
 
 ## 🚀 Live Demo
 
-👉 [Live Site Link](https://your-live-site-url.com)  
-👉 [Frontend Repo](https://github.com/yourusername/library-frontend)  
-👉 [Backend Repo](https://github.com/yourusername/library-backend)
+👉 [Live Site Link](https://minimal-library-management-system-r-ten.vercel.app)  
+👉 [Backend Repo](https://github.com/nazneenlipi/mongoose-book-server-moduler-pattern)
 
 ---
+
+## UI Preview 
+
+
 
 ## 🧰 Tech Stack
 
@@ -59,3 +62,5 @@ git clone (https://github.com/nazneenlipi/Minimal-Library-Management-System-reac
 cd library-frontend
 npm install
 npm run dev
+
+
