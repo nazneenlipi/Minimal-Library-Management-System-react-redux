@@ -54,13 +54,20 @@ A clean and functional **Library Management System** built with **React, Redux T
 
 ---
 
-## 🗂️ Folder Structure (Frontend)
-
 ### 🔹 Frontend
 
 ```bash
 git clone (https://github.com/nazneenlipi/Minimal-Library-Management-System-react-redux)
-cd library-frontend
+cd Minimal-Library-Management-System-react-redux
+npm install
+npm run dev
+
+
+### 🔹 Backend
+
+```bash
+git clone (https://github.com/nazneenlipi/mongoose-book-server-moduler-pattern)
+cd mongoose-book-server-moduler-pattern
 npm install
 npm run dev
 
