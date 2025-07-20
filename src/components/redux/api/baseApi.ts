@@ -19,10 +19,20 @@ export const baseApi = createApi({
   }),
   tagTypes: ["Books", "Book", "Borrow"],
   endpoints: (build) => ({
-    getBooks: build.query<ApiResponse<Book[]>, void>({
-      query: () => "/books",
-      providesTags: ["Books"],
-    }),
+    // getBooks: build.query<ApiResponse<Book[]>, void>({
+    //   query: () => "/books",
+    //   providesTags: ["Books"],
+    // }),
+getBooks: build.query<ApiResponse<Book[]>, void>({
+  query: () => "/books",
+  providesTags: (result) =>
+    result
+      ? [
+          ...result.data.map((book) => ({ type: "Books" as const, id: book._id })),
+          { type: "Books", id: "LIST" },
+        ]
+      : [{ type: "Books", id: "LIST" }],
+}),
 
     addBook: build.mutation<ApiResponse<Book>, Partial<Book>>({
       query(body) {

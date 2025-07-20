@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { FaBookOpen } from "react-icons/fa";
-import { useBorrowBookMutation } from "@/components/redux/api/baseApi";
+import { useBorrowBookMutation, useGetBooksQuery } from "@/components/redux/api/baseApi";
 import type Book from "@/lib/book";
 import type { ApiErrorResponse, BorrowFormData } from "@/lib/book";
 import { useNavigate } from "react-router";
@@ -26,6 +26,7 @@ interface BorrowBookModalProps {
 
 const BorrowBookModal = ({ book }: BorrowBookModalProps) => {
   const [open, setOpen] = useState(false);
+   const { refetch } = useGetBooksQuery();
   const [borrowBook, { isLoading }] = useBorrowBookMutation();
  const navigate = useNavigate();
   const {
@@ -57,6 +58,7 @@ const BorrowBookModal = ({ book }: BorrowBookModalProps) => {
       const response = await borrowBook(requestData).unwrap();
       console.log("Success response:", response);
       toast.success("Book borrowed successfully!");
+        refetch();
       setOpen(false);
       reset();
           navigate("/borrow-summary");
@@ -107,7 +109,7 @@ const BorrowBookModal = ({ book }: BorrowBookModalProps) => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <Label htmlFor="date">Return Date *</Label>
+            <Label className="pb-2" htmlFor="date">Return Date *</Label>
             <Input
               type="date"
               id="date"
@@ -130,7 +132,7 @@ const BorrowBookModal = ({ book }: BorrowBookModalProps) => {
           </div>
 
           <div>
-            <Label htmlFor="quantity">Quantity *</Label>
+            <Label className="pb-2" htmlFor="quantity">Quantity *</Label>
             <Input
               type="number"
               id="quantity"

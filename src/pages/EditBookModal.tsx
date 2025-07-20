@@ -17,12 +17,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { FaEdit } from "react-icons/fa";
 import type Book from "@/lib/book";
-import { useUpdateBookMutation } from "@/components/redux/api/baseApi";
+import { useGetBooksQuery, useUpdateBookMutation } from "@/components/redux/api/baseApi";
 import { toast } from "sonner"; 
 const EditBookModal = ({ book }: { book: Book }) => {
   const [open, setOpen] = useState(false);
   const [updateBook, { isLoading }] = useUpdateBookMutation();
-
+ const { refetch } = useGetBooksQuery();
   const {
     register,
     handleSubmit,
@@ -46,6 +46,7 @@ const EditBookModal = ({ book }: { book: Book }) => {
 
       setOpen(false);
       toast.success("Book updated successfully!");
+      await refetch();
     } catch (error: unknown) {
       if (typeof error === "object" && error !== null) {
         const err = error as { data?: { message?: string }; message?: string };
@@ -92,7 +93,7 @@ const EditBookModal = ({ book }: { book: Book }) => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="title">Title *</Label>
+              <Label className="pb-2" htmlFor="title">Title *</Label>
               <Input
                 id="title"
                 {...register("title", { required: "Title is required" })}
@@ -106,7 +107,7 @@ const EditBookModal = ({ book }: { book: Book }) => {
             </div>
 
             <div>
-              <Label htmlFor="author">Author *</Label>
+              <Label className="pb-2" htmlFor="author">Author *</Label>
               <Input
                 id="author"
                 {...register("author", { required: "Author is required" })}
@@ -120,7 +121,7 @@ const EditBookModal = ({ book }: { book: Book }) => {
             </div>
 
             <div>
-              <Label htmlFor="genre">Genre *</Label>
+              <Label className="pb-2" htmlFor="genre">Genre *</Label>
               <Input
                 id="genre"
                 {...register("genre", { required: "Genre is required" })}
@@ -134,7 +135,7 @@ const EditBookModal = ({ book }: { book: Book }) => {
             </div>
 
             <div>
-              <Label htmlFor="isbn">ISBN *</Label>
+              <Label className="pb-2" htmlFor="isbn">ISBN *</Label>
               <Input
                 id="isbn"
                 {...register("isbn", { required: "ISBN is required" })}
@@ -148,7 +149,7 @@ const EditBookModal = ({ book }: { book: Book }) => {
             </div>
 
             <div>
-              <Label htmlFor="copies">Copies *</Label>
+              <Label className="pb-2" htmlFor="copies">Copies *</Label>
               <Input
                 type="number"
                 id="copies"
@@ -174,14 +175,14 @@ const EditBookModal = ({ book }: { book: Book }) => {
                   setValue("available", Boolean(checked))
                 }
               />
-              <Label htmlFor="available" className="text-white">
+              <Label className="pb-2" htmlFor="available" className="text-white">
                 Available
               </Label>
             </div>
           </div>
 
           <div>
-            <Label htmlFor="description">Description</Label>
+            <Label className="pb-2" htmlFor="description">Description</Label>
             <Textarea
               id="description"
               rows={4}
