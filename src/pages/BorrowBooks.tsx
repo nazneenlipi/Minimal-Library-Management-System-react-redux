@@ -21,8 +21,8 @@ const BorrowedBooksTable = () => {
     );
 
   return (
-    <div className="max-w-6xl mx-auto mt-10 p-4 bg-[#1f1f1f] border border-gray-700 rounded-xl shadow-md">
-      <h2 className="text-xl font-bold text-white mb-4 text-center">
+    <div className="max-w-6xl mx-auto mt-10 p-10 bg-[#1f1f1f] border border-gray-700 rounded-xl shadow-md">
+      <h2 className="text-xl font-bold text-white mb-10 text-center">
         📖 Borrowed Books Summary
       </h2>
       <table className="w-full text-left border-collapse">

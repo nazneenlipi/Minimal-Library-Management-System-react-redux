@@ -18,6 +18,7 @@ import { FaBookOpen } from "react-icons/fa";
 import { useBorrowBookMutation } from "@/components/redux/api/baseApi";
 import type Book from "@/lib/book";
 import type { ApiErrorResponse, BorrowFormData } from "@/lib/book";
+import { useNavigate } from "react-router";
 
 interface BorrowBookModalProps {
   book: Book;
@@ -26,7 +27,7 @@ interface BorrowBookModalProps {
 const BorrowBookModal = ({ book }: BorrowBookModalProps) => {
   const [open, setOpen] = useState(false);
   const [borrowBook, { isLoading }] = useBorrowBookMutation();
-
+ const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -58,6 +59,7 @@ const BorrowBookModal = ({ book }: BorrowBookModalProps) => {
       toast.success("Book borrowed successfully!");
       setOpen(false);
       reset();
+          navigate("/borrow-summary");
     } catch (error) {
       console.error("Error borrowing book:", error);
       console.error("Request data that failed:", requestData);

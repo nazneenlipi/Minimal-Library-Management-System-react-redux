@@ -16,6 +16,7 @@ import type Book from "@/lib/book";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 interface AddBookProps {
   buttonText?: string;
@@ -46,7 +47,7 @@ export function AddBook({
   });
 
   const [addBook, { isLoading, isError }] = useAddBookMutation();
-
+  const navigate = useNavigate();
   const onSubmit = async (data: Book) => {
     console.log("Form submitted with data:", data);
 
@@ -71,6 +72,7 @@ export function AddBook({
         toast.success("Book has been created successfully!");
         reset();
         setIsOpen(false);
+        navigate("/books");
       } else {
         toast.error(response.message || "Failed to add book.");
       }

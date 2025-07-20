@@ -13,7 +13,7 @@ export const Books = () => {
   const navigate = useNavigate();
   const { data, isLoading, isError } = useGetBooksQuery(undefined);
   const [deleteBook] = useDeleteBookMutation();
-  if (isLoading) return <p className="text-center text-gray-300">Loading...</p>;
+  if (isLoading) return <p className="text-center text-black dark:text-white">Loading...</p>;
   if (isError)
     return <p className="text-center text-red-400">Something went wrong!</p>;
 
@@ -29,7 +29,7 @@ export const Books = () => {
 
   return (
     <div className="max-w-7xl mx-auto py-10 px-4">
-      <h2 className="text-3xl font-bold text-white mb-14 text-center">
+      <h2 className="text-3xl font-bold text-black dark:text-white mb-14 text-center">
         📚 Our Book Collection
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -66,13 +66,12 @@ export const Books = () => {
                   onClick={() => navigate(`/books/${book._id}`)}
                   className="w-4 h-4"
                 />
-        
               </button>
               <div className=" bg-gray-800 text-green-400 hover:text-green-500 hover:bg-gray-700 transition">
                 <EditBookModal book={book} />
               </div>
               <div className=" bg-gray-800 text-green-400 hover:text-green-500 hover:bg-gray-700 transition">
-               <BorrowBookModal book={book} />
+                <BorrowBookModal book={book} />
               </div>
               <button className="p-2 rounded-full bg-gray-800 text-red-400 hover:text-red-500 hover:bg-gray-700 transition">
                 <FaTrash
