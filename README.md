@@ -65,7 +65,6 @@ npm run dev
 
 ### 🔹 Backend
 
-```bash
 git clone (https://github.com/nazneenlipi/mongoose-book-server-moduler-pattern)
 cd mongoose-book-server-moduler-pattern
 npm install
