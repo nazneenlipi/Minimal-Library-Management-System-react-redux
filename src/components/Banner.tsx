@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "./ui/button";
 import { Link } from "react-router";
 
@@ -12,17 +11,10 @@ const Banner = () => {
         Explore our curated collection of timeless classics, modern bestsellers,
         and hidden gems. Dive into the world of stories today.
       </p>
-      {/* <button
-        type="button"
-        className="px-8 py-3 rounded-full light:bg-black dark:bg-white dark:text-black light:text-white font-semibold shadow-xl hover:brightness-90 transition"
-      >
-        Browse Collection
-      </button> */}
 
-    <Button asChild>
-      <Link to="/books">Browse Collection</Link>
-    </Button>
-
+      <Button asChild>
+        <Link to="/books">Browse Collection</Link>
+      </Button>
     </section>
   );
 };
