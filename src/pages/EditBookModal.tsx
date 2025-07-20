@@ -175,7 +175,7 @@ const EditBookModal = ({ book }: { book: Book }) => {
                   setValue("available", Boolean(checked))
                 }
               />
-              <Label className="pb-2" htmlFor="available" className="text-white">
+              <Label htmlFor="available" className="text-white pb-2">
                 Available
               </Label>
             </div>

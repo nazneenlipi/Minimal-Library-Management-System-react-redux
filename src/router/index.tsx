@@ -4,13 +4,14 @@ import { Books } from "@/pages/Books";
 import BookDetails from "@/pages/BookDetails";
 import BorrowedBooksTable from "@/pages/BorrowBooks";
 import { AddBook } from "@/pages/AddBook";
+import Banner from "@/components/Banner";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
-      //  { path: "", element: <HomePage /> },
+       { index: true, element: <Banner /> }, 
       {
         path: "/books",
         element: <Books />,
